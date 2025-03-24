@@ -9,15 +9,10 @@ const env = require("./server/env");
 const isSQLite = env.DB_CLIENT === "sqlite3" || env.DB_CLIENT === "better-sqlite3";
 
 module.exports = {
-  client: env.DB_CLIENT,
+  client: 'pg',
   connection: {
-    ...(isSQLite && { filename: env.DB_FILENAME }),
-    host: env.DB_HOST,
-    database: env.DB_NAME,
-    user: env.DB_USER,
-    port: env.DB_PORT,
-    password: env.DB_PASSWORD,
-    ssl: env.DB_SSL,
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false } // ✅ Required for Render DB
   },
   useNullAsDefault: true,
   migrations: {
